@@ -9,6 +9,7 @@ ENV AUTOSAVENUM="5" \
     DISABLESEASONALEVENTS="false" \
     GAMECONFIGDIR="/config/gamefiles/FactoryGame/Saved" \
     GAMESAVESDIR="/home/steam/.config/Epic/FactoryGame/Saved/SaveGames" \
+    HOME="/home/steam" \
     LOG="false" \
     MAXOBJECTS="2162688" \
     MAXPLAYERS="4" \
@@ -24,6 +25,7 @@ ENV AUTOSAVENUM="5" \
     STEAMBETA="false" \
     STEAMBETAID="" \
     STEAMBETAKEY="" \
+    STEAMCMD_FORCE_PLATFORM_TYPE="linux" \
     TIMEOUT="30" \
     VMOVERRIDE="false"
 
