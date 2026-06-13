@@ -11,7 +11,7 @@ RAMAVAILABLE=$(awk '/MemAvailable/ {printf( "%d\n", $2 / 1024000 )}' /proc/memin
 
 export CURRENTGID=$(id -g)
 export CURRENTUID=$(id -u)
-export HOME="/home/steam"
+export HOME="${HOME:-/home/steam}"
 export STEAMGID=$(id -g steam)
 export STEAMUID=$(id -u steam)
 export USER="steam"
@@ -83,8 +83,15 @@ elif [[ "$PUID" -eq 0 ]]; then
 fi
 
 if [[ "$CURRENTUID" -eq "0" ]]; then
-    if [[ $(getent group $PGID | cut -d: -f1) ]]; then
-        usermod -a -G "$PGID" steam
+    REQUESTED_GROUP=$(getent group "$PGID" | cut -d: -f1)
+    if [[ "$(id -g steam)" -eq "$PGID" ]]; then
+        printf "steam already has primary group %s, skipping usermod\\n" "$PGID"
+    elif [[ -n "$REQUESTED_GROUP" ]]; then
+        if id -nG steam | tr ' ' '\n' | grep -qx "$REQUESTED_GROUP"; then
+            printf "steam already belongs to group %s (%s), skipping usermod\\n" "$PGID" "$REQUESTED_GROUP"
+        else
+            usermod -a -G "$PGID" steam
+        fi
     else
         groupmod -g "$PGID" steam
     fi

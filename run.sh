@@ -136,7 +136,22 @@ if [[ "${SKIPUPDATE,,}" != "true" ]]; then
         printf "\\nRemoving the app manifest to force Steam to check for an update...\\n"
         rm "/config/gamefiles/steamapps/appmanifest_1690800.acf" || true
     fi
-    steamcmd +force_install_dir /config/gamefiles +login anonymous +app_update "$STEAMAPPID" -beta "$STEAMBETAFLAG" $STEAMBETAPASSWORD validate +quit
+
+    steamcmd_platform_args=()
+    if [[ -n "$STEAMCMD_FORCE_PLATFORM_TYPE" ]]; then
+        steamcmd_platform_args=("+@sSteamCmdForcePlatformType" "$STEAMCMD_FORCE_PLATFORM_TYPE")
+        printf "Setting SteamCMD platform override to %s\\n" "$STEAMCMD_FORCE_PLATFORM_TYPE"
+    else
+        printf "SteamCMD platform override is disabled\\n"
+    fi
+    printf "Setting SteamCMD install directory to /config/gamefiles\\n"
+
+    steamcmd \
+        "${steamcmd_platform_args[@]}" \
+        +force_install_dir /config/gamefiles \
+        +login anonymous \
+        +app_update "$STEAMAPPID" -beta "$STEAMBETAFLAG" $STEAMBETAPASSWORD validate \
+        +quit
     cp -r /home/steam/.steam/steam/logs/* "/config/logs/steam" || printf "Failed to store Steam logs\\n"
 else
     printf "Skipping update as flag is set\\n"

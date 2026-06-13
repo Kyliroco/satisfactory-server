@@ -174,8 +174,13 @@ helm install satisfactory k8s-at-home/satisfactory -f values.yaml
 | `STEAMBETA`             |  `false`  | set experimental game version                             |
 | `STEAMBETAID`           |           | set a custom beta game version (for testing)              |
 | `STEAMBETAKEY`          |           | set password for the beta game version (for testing)      |
+| `STEAMCMD_FORCE_PLATFORM_TYPE` | `linux` | force SteamCMD platform type when installing/updating (set empty to disable) |
 | `TIMEOUT`               |   `30`    | set client timeout (in seconds)                           |
 | `VMOVERRIDE`            |  `false`  | skips the CPU model check (should not ordinarily be used) |
+
+If SteamCMD fails with `Missing configuration` while installing or updating app `1690800`, set
+`STEAMCMD_FORCE_PLATFORM_TYPE=linux`. This is the default for the Docker image because the Satisfactory Dedicated
+Server is installed in a Linux container.
 
 ## Experimental Branch
 
